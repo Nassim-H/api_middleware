@@ -91,6 +91,15 @@ Il y a plusieurs manières d'installer Odoo, un ERP open-source. Un ERP, c'est u
 
 Pour ce projet, j'ai installé Odoo en local. Pour cela, j'ai installé le programme d'installation puis lancé le serveur Odoo.
 
+### Middleware
+
+J'ai décidé de faire le middleware en PHP Laravel. Pour cela, j'ai créé un projet Laravel et j'ai installé le package `prestashop-webservice-lib` pour communiquer avec l'API Prestashop.
+
+Pour commencer le projet Laravel, il suffit de lancer la commande suivante :
+
+```bash
+composer create-project --prefer-dist laravel/laravel middleware
+```
 
 
 
