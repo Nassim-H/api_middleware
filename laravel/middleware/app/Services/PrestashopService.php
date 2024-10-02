@@ -29,4 +29,37 @@ class PrestashopService
         return $response->json();
     }
 
+    public function createProduct($data)
+    {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>
+            <prestashop xmlns:xlink="http://www.w3.org/1999/xlink">
+                <product>
+                    <state><![CDATA[' . $data['state'] . ']]></state>
+                    <price><![CDATA[' . $data['price'] . ']]></price>
+                    <name>
+                        <language id="1"><![CDATA[' . $data['name'] . ']]></language>
+                    </name>
+                    <description>
+                        <language id="1"><![CDATA[' . $data['description'] . ']]></language>
+                    </description>
+                </product>
+            </prestashop>';
+
+        $response = Http::withBasicAuth($this->apiKey, '')
+            ->withHeaders([
+                'Content-Type' => 'application/xml',
+            ])
+            ->withBody($xml, 'application/xml')  
+            ->post("{$this->url}/products");
+
+        if ($response->failed()) {
+            return [
+                'error' => 'Failed to create product in Prestashop',
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ];
+        }
+
+        return $response->json();  
+    }
 }

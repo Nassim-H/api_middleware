@@ -9,3 +9,5 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/prestashop/product/{id}', [PrestashopController::class, 'getProduct']);
+
+Route::post('/prestashop/product', [PrestashopController::class, 'createProduct']);
