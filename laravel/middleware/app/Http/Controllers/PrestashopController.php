@@ -6,6 +6,7 @@ use App\Services\PrestashopService;
 use App\Services\FlaskService; // Importer le FlaskService pour communiquer avec Flask
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Http;
 
 class PrestashopController extends Controller
 {
@@ -84,4 +85,40 @@ class PrestashopController extends Controller
             ], 500);
         }
     }
+
+    public function syncProductFromOdooToPrestashop($id)
+{
+    try {
+        // 1. Récupérer le produit depuis Odoo via l'API Flask
+        $response = Http::get("http://localhost:5000/get_product/{$id}");
+        $product = $response->json();
+
+        if (!$product || isset($product['error'])) {
+            throw new Exception('Erreur lors de la récupération du produit depuis Odoo.');
+        }
+
+        // 2. Préparer les données pour Prestashop (adapter les champs)
+        $data = [
+            'state' => 1, // Statut actif du produit dans Prestashop
+            'price' => $product['list_price'],
+            'name' => $product['name'],
+            'description' => $product['description'] ?? 'Pas de description',
+        ];
+
+        // 3. Envoyer les données à Prestashop via l'API Laravel
+        $createdProduct = $this->prestashopService->createProduct($data);
+
+        return response()->json(['success' => true, 'message' => 'Produit synchronisé de Odoo à Prestashop.', 'created_product' => $product['name']], 201);
+
+    } catch (Exception $e) {
+        // Gestion des erreurs
+        return response()->json([
+            'error' => 'Erreur lors de la synchronisation du produit depuis Odoo.',
+            'message' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile()
+        ], 500);
+    }
+}
+
 }

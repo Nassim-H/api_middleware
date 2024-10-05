@@ -18,4 +18,6 @@ Route::post('/odoo/product', [FlaskController::class, 'createProductInOdoo']);
 
 Route::get('/products/sync-to-odoo/{id}', [PrestashopController::class, 'syncProductToOdoo']);
 
+Route::get('/products/sync-to-prestashop/{id}', [PrestashopController::class, 'syncProductFromOdooToPrestashop']);
+
 
