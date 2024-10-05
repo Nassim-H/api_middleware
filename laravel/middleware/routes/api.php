@@ -13,7 +13,5 @@ Route::get('/prestashop/product/{id}', [PrestashopController::class, 'getProduct
 
 Route::post('/prestashop/product', [PrestashopController::class, 'createProduct']);
 
-Route::get('/odoo/test-auth', [OdooController::class, 'testAuth']);
 
 
-Route::get('/odoo/products', [OdooController::class, 'getProducts']);

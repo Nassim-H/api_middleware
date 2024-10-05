@@ -1,0 +1,35 @@
+from flask import Flask, request, jsonify
+import xmlrpc.client
+
+app = Flask(__name__)
+
+# Configuration Odoo
+url = "http://localhost:8069"
+db = "admin"
+username = "admin@localhost.com"
+password = "Venividivici"
+
+common = xmlrpc.client.ServerProxy(f"{url}/xmlrpc/2/common")
+uid = common.authenticate(db, username, password, {})
+models = xmlrpc.client.ServerProxy(f"{url}/xmlrpc/2/object")
+
+# Route pour créer un produit dans Odoo
+@app.route('/create_product', methods=['POST'])
+def create_product():
+    data = request.json
+    try:
+        product_data = {
+            'name': data['name'],
+            'list_price': data['list_price'],
+            'description': data['description']
+        }
+        product_id = models.execute_kw(db, uid, password,
+                                       'product.template', 'create',
+                                       [product_data])
+        return jsonify({"success": True, "product_id": product_id}), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Démarrer le serveur Flask
+if __name__ == "__main__":
+    app.run(debug=True)
