@@ -26,9 +26,11 @@ class FlaskController extends Controller
         try {
             // Appel du service Flask pour créer le produit dans Odoo
             $product = $this->flaskService->createProductInOdoo(
-                $validated['name'],
-                $validated['list_price'],
-                $validated['description']
+                [
+                    'name' => $validated['name'],
+                    'price' => $validated['list_price'],
+                    'description' => $validated['description'],
+                ]
             );
 
             // Retourner une réponse réussie

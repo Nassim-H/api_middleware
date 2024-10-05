@@ -14,16 +14,16 @@ class FlaskService
         $this->flaskUrl = env('FLASK_API_URL'); // URL de l'API Flask
     }
 
-    public function createProductInOdoo($name, $price, $description)
+    public function createProductInOdoo($product)
     {
         // Créer l'URL complète pour l'API Flask
         $url = $this->flaskUrl . '/create_product';
 
         // Données à envoyer à Flask
         $data = [
-            'name' => $name,
-            'list_price' => $price,
-            'description' => $description
+            'name' => $product['name'],
+            'list_price' => $product['price'],
+            'description' => $product['description'],
         ];
 
         try {
