@@ -17,7 +17,7 @@ class FlaskService
     public function createProductInOdoo($name, $price, $description)
     {
         // Créer l'URL complète pour l'API Flask
-        $url = $this->flaskUrl . '/add_product';
+        $url = $this->flaskUrl . '/create_product';
 
         // Données à envoyer à Flask
         $data = [
