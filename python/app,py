@@ -30,6 +30,20 @@ def create_product():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/get_product/<int:product_id>', methods=['GET'])
+def get_product(product_id):
+    try:
+        # Récupérer le produit par son ID
+        product = models.execute_kw(db, uid, password, 'product.template', 'read', [[product_id]], {'fields': ['name', 'list_price', 'description']})
+
+        if product:
+            return jsonify(product[0])  # Retourner le produit en JSON
+        else:
+            return jsonify({'error': 'Produit non trouvé'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    
 # Démarrer le serveur Flask
 if __name__ == "__main__":
     app.run(debug=True)
