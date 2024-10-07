@@ -10,16 +10,13 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/prestashop/product/{id}', [PrestashopController::class, 'getProduct']);
-
-Route::post('/prestashop/product', [PrestashopController::class, 'createProduct']);
-
-Route::post('/odoo/product', [FlaskController::class, 'createProductInOdoo']);
-
-Route::get('/products/sync-to-odoo/{id}', [PrestashopController::class, 'syncProductToOdoo']);
-
-Route::get('/products/sync-to-prestashop/{id}', [PrestashopController::class, 'syncProductFromOdooToPrestashop']);
-
+Route::middleware(['App\Http\Middleware\VerifyApiKey'])->group(function () {
+    Route::post('/prestashop/products', [PrestashopController::class, 'createProduct']);
+    Route::post('/odoo/products', [FlaskController::class, 'createProductInOdoo']);
+    Route::get('/products/sync-to-odoo/{id}', [PrestashopController::class, 'syncProductToOdoo']);
+    Route::get('/products/sync-to-prestashop/{id}', [PrestashopController::class, 'syncProductFromOdooToPrestashop']);
+});
 
 Route::get('/prestashop/products', [PrestashopController::class, 'listAllProducts']);
+Route::get('/prestashop/products/{id}', [PrestashopController::class, 'getProduct']);
 
