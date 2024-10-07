@@ -19,4 +19,6 @@ Route::middleware(['App\Http\Middleware\VerifyApiKey'])->group(function () {
 
 Route::get('/prestashop/products', [PrestashopController::class, 'listAllProducts']);
 Route::get('/prestashop/products/{id}', [PrestashopController::class, 'getProduct']);
+Route::get('/odoo/products', [FlaskController::class, 'listAllProducts']);
+Route::get('/odoo/products/{id}', [FlaskController::class, 'getProduct']);
 
