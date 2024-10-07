@@ -40,4 +40,44 @@ class FlaskService
             throw new Exception('Erreur lors de la connexion avec Flask : ' . $e->getMessage());
         }
     }
+
+    public function getProduct($id)
+    {
+        // Créer l'URL complète pour l'API Flask
+        $url = $this->flaskUrl . '/get_product/' . $id;
+
+        try {
+            // Envoyer la requête GET à Flask
+            $response = Http::get($url);
+
+            // Vérifier si la requête est réussie
+            if ($response->successful()) {
+                return $response->json(); // Retourner la réponse JSON
+            } else {
+                throw new Exception('Erreur lors de la récupération du produit depuis Odoo via Flask.');
+            }
+        } catch (Exception $e) {
+            throw new Exception('Erreur lors de la connexion avec Flask : ' . $e->getMessage());
+        }
+    }
+
+    public function getProducts()
+    {
+        // Créer l'URL complète pour l'API Flask
+        $url = $this->flaskUrl . '/get_products';
+
+        try {
+            // Envoyer la requête GET à Flask
+            $response = Http::get($url);
+
+            // Vérifier si la requête est réussie
+            if ($response->successful()) {
+                return $response->json(); // Retourner la réponse JSON
+            } else {
+                throw new Exception('Erreur lors de la récupération des produits depuis Odoo via Flask.');
+            }
+        } catch (Exception $e) {
+            throw new Exception('Erreur lors de la connexion avec Flask : ' . $e->getMessage());
+        }
+    }
 }

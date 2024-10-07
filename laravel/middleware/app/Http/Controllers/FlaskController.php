@@ -16,7 +16,6 @@ class FlaskController extends Controller
 
     public function createProductInOdoo(Request $request)
     {
-        // Valider les données d'entrée
         $validated = $request->validate([
             'name' => 'required|string',
             'list_price' => 'required|numeric',
@@ -24,7 +23,6 @@ class FlaskController extends Controller
         ]);
 
         try {
-            // Appel du service Flask pour créer le produit dans Odoo
             $product = $this->flaskService->createProductInOdoo(
                 [
                     'name' => $validated['name'],
@@ -33,12 +31,24 @@ class FlaskController extends Controller
                 ]
             );
 
-            // Retourner une réponse réussie
             return response()->json(['success' => true, 'product' => $product], 201);
 
         } catch (Exception $e) {
-            // Gérer les erreurs
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function getProduct($id)
+    {
+        $product = $this->flaskService->getProduct($id);
+
+        return response()->json($product);
+    }
+
+    public function listAllProducts()
+    {
+        $products = $this->flaskService->getProducts();
+
+        return response()->json($products);
     }
 }
