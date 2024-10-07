@@ -72,7 +72,7 @@ class PrestashopController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Produit synchronisé avec succès dans Odoo.',
-                'product_in_odoo' => $response
+                'product_in_odoo' => $productData['name'],
             ], 200);
 
         } catch (Exception $e) {
@@ -120,5 +120,16 @@ class PrestashopController extends Controller
         ], 500);
     }
 }
+
+public function listAllProducts()
+{
+    try {
+        $products = $this->prestashopService->getAllProducts();
+        return response()->json($products, 200);
+    } catch (Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
+}
+
 
 }

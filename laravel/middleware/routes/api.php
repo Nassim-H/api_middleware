@@ -21,3 +21,5 @@ Route::get('/products/sync-to-odoo/{id}', [PrestashopController::class, 'syncPro
 Route::get('/products/sync-to-prestashop/{id}', [PrestashopController::class, 'syncProductFromOdooToPrestashop']);
 
 
+Route::get('/prestashop/products', [PrestashopController::class, 'listAllProducts']);
+
